@@ -1,0 +1,136 @@
+[gd_scene load_steps=10 format=3 uid="uid://bex0p3x8yf7c7"]
+
+[ext_resource type="Script" uid="uid://58b3j4ojchrt" path="res://SCRIPTS/GameManager.cs" id="1_kldst"]
+[ext_resource type="Texture2D" uid="uid://b6bwnyfdmdya6" path="res://AssetBundle/Sprites/ForestBackground.png" id="1_s088b"]
+[ext_resource type="PackedScene" uid="uid://d0gcwq6864sj3" path="res://Scenes/Player.tscn" id="2_rlklq"]
+[ext_resource type="PackedScene" uid="uid://cibytomgwr65p" path="res://Scenes/Slimer.tscn" id="3_j5yw3"]
+[ext_resource type="FontFile" uid="uid://b04oto5bde5w1" path="res://AssetBundle/Uranus_Pixel_11Px.ttf" id="5_b2bpf"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_nbk1g"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_jclma"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_7ft2l"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_d7kmx"]
+
+[node name="Main" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_kldst")
+
+[node name="Background" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="Left" type="Sprite2D" parent="Background"]
+position = Vector2(-3, -1)
+texture = ExtResource("1_s088b")
+
+[node name="Right" type="Sprite2D" parent="Background"]
+position = Vector2(237, -2)
+texture = ExtResource("1_s088b")
+
+[node name="MainCamera" type="Camera2D" parent="."]
+position = Vector2(117, 2)
+zoom = Vector2(2.4, 2.4)
+metadata/_edit_lock_ = true
+
+[node name="Boundary" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="Top" type="StaticBody2D" parent="Boundary"]
+position = Vector2(109, -142)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundary/Top"]
+position = Vector2(4, 183)
+rotation = 3.1415927
+shape = SubResource("WorldBoundaryShape2D_nbk1g")
+
+[node name="Bottom" type="StaticBody2D" parent="Boundary"]
+position = Vector2(114, 138)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundary/Bottom"]
+shape = SubResource("WorldBoundaryShape2D_jclma")
+
+[node name="Left" type="StaticBody2D" parent="Boundary"]
+position = Vector2(-122.99999, 1)
+rotation = 1.5663078
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundary/Left"]
+position = Vector2(0, 1)
+shape = SubResource("WorldBoundaryShape2D_7ft2l")
+
+[node name="Right" type="StaticBody2D" parent="Boundary"]
+position = Vector2(358, 0)
+rotation = -1.570835
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundary/Right"]
+shape = SubResource("WorldBoundaryShape2D_d7kmx")
+
+[node name="Player" parent="." instance=ExtResource("2_rlklq")]
+position = Vector2(-2, 81)
+
+[node name="Slimer" parent="." instance=ExtResource("3_j5yw3")]
+position = Vector2(372, 114)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ScoreLabel" type="Label" parent="CanvasLayer"]
+offset_left = 18.0
+offset_top = 17.0
+offset_right = 162.0
+offset_bottom = 66.0
+theme_override_fonts/font = ExtResource("5_b2bpf")
+theme_override_font_sizes/font_size = 48
+text = "Score:0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GameOverLabel" type="Label" parent="CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -72.0
+offset_top = -24.5
+offset_right = 72.0
+offset_bottom = 24.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.71345913, 0.82986283, 0.448129, 1)
+theme_override_colors/font_outline_color = Color(0.3175509, 0.62057334, 0.609373, 1)
+theme_override_constants/outline_size = 50
+theme_override_fonts/font = ExtResource("5_b2bpf")
+theme_override_font_sizes/font_size = 120
+text = "Game Over"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Name" type="Label" parent="CanvasLayer/GameOverLabel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -261.0
+offset_top = 58.0
+offset_right = 27.0
+offset_bottom = 107.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.71345913, 0.82986283, 0.448129, 1)
+theme_override_colors/font_outline_color = Color(0.3175509, 0.62057334, 0.609373, 1)
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("5_b2bpf")
+theme_override_font_sizes/font_size = 48
+text = "Game By ZaTo"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="timeout" from="Timer" to="." method="_SpawnSlimer"]
